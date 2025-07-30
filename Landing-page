@@ -1,215 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Calculator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <title>Landing Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ===== RESET ===== */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    /* ===== VARIABLES ===== */
+    :root{
+      --clr-bg:#f5f7fa;
+      --clr-primary:#6366f1;
+      --clr-primary-dark:#4f46e5;
+      --clr-text:#111827;
+      --clr-muted:#6b7280;
+      --radius:8px;
+      --max-width:1100px;
+    }
 
-        .calculator {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
+    /* ===== BASE ===== */
+    body{background:var(--clr-bg);color:var(--clr-text);line-height:1.6}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
 
-        .display {
-            background-color: #444;
-            color: white;
-            font-size: 2em;
-            padding: 10px;
-            text-align: right;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            min-height: 60px;
-            overflow: hidden;
-        }
+    /* ===== NAV ===== */
+    header{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+    .nav{display:flex;align-items:center;justify-content:space-between;max-width:var(--max-width);margin:0 auto;padding:1rem 1.25rem}
+    .logo{font-weight:700;font-size:1.25rem;color:var(--clr-primary)}
+    .nav-links{display:flex;gap:1.5rem}
+    .nav-links a{color:var(--clr-muted);font-weight:500}
+    .nav-links a:hover{color:var(--clr-primary)}
+    .cta{background:var(--clr-primary);color:#fff;padding:.5rem 1rem;border-radius:var(--radius)}
+    .cta:hover{background:var(--clr-primary-dark)}
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
+    /* ===== HERO ===== */
+    .hero{display:flex;flex-direction:column-reverse;align-items:center;gap:2rem;max-width:var(--max-width);margin:4rem auto;padding:0 1.25rem}
+    .hero-content{text-align:center}
+    .hero h1{font-size:2.5rem;font-weight:800;margin-bottom:.75rem}
+    .hero p{color:var(--clr-muted);max-width:480px;margin:0 auto 1.5rem}
+    .hero-btn{background:var(--clr-primary);color:#fff;padding:.75rem 1.5rem;border-radius:var(--radius);font-weight:600;display:inline-block}
+    .hero-btn:hover{background:var(--clr-primary-dark)}
+    .hero img{width:100%;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 
-        button {
-            padding: 25px;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #666;
-            color: white;
-            transition: background-color 0.2s;
-        }
+    /* ===== FEATURES ===== */
+    .features{max-width:var(--max-width);margin:5rem auto;padding:0 1.25rem}
+    .features h2{text-align:center;margin-bottom:2rem;font-size:2rem}
+    .grid{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .card{background:#fff;border-radius:var(--radius);padding:2rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .card h3{margin:.75rem 0;font-size:1.25rem}
+    .card p{color:var(--clr-muted);font-size:.95rem}
 
-        button:hover {
-            background-color: #777;
-        }
+    /* ===== FOOTER ===== */
+    footer{text-align:center;padding:2rem 1.25rem;color:var(--clr-muted);font-size:.875rem}
 
-        button:active {
-            background-color: #555;
-        }
-
-        .operator {
-            background-color: #ff9500;
-        }
-
-        .operator:hover {
-            background-color: #ffb143;
-        }
-
-        .equals {
-            background-color: #4CAF50;
-            grid-column: span 2;
-        }
-
-        .equals:hover {
-            background-color: #5cbf60;
-        }
-
-        .clear {
-            background-color: #f44336;
-        }
-
-        .clear:hover {
-            background-color: #f66;
-        }
-
-        .zero {
-            grid-column: span 2;
-        }
-    </style>
+    /* ===== RESPONSIVE ===== */
+    @media(min-width:768px){
+      .hero{flex-direction:row;text-align:left}
+      .hero-content{align-items:flex-start}
+      .hero h1{font-size:3rem}
+    }
+  </style>
 </head>
+
 <body>
-    <div class="calculator">
-        <div class="display" id="display">0</div>
-        <div class="buttons">
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button onclick="appendToDisplay('/')" class="operator">÷</button>
-            <button onclick="appendToDisplay('*')" class="operator">×</button>
-            <button onclick="deleteLast()">←</button>
-            
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('-')" class="operator">-</button>
-            
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('+')" class="operator">+</button>
-            
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            
-            <button onclick="appendToDisplay('0')" class="zero">0</button>
-            <button onclick="calculate()" class="equals">=</button>
-        </div>
-    </div>
+  <header>
+    <nav class="nav" aria-label="Main">
+      <a href="#" class="logo">Brand</a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="cta">Get Started</a>
+      </div>
+    </nav>
+  </header>
 
-    <script>
-        let display = document.getElementById('display');
-        let currentInput = '0';
-        let shouldResetDisplay = false;
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Build Something Amazing</h1>
+        <p>Everything you need to launch faster, scale smarter, and delight users—without the usual headaches.</p>
+        <a href="#contact" class="hero-btn">Start Free Trial</a>
+      </div>
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=60" alt="Dashboard preview">
+    </section>
 
-        function updateDisplay() {
-            display.textContent = currentInput;
-        }
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <h2>Why Choose Us?</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>⚡ Lightning Fast</h3>
+          <p>Optimized to load in milliseconds so your users never wait.</p>
+        </article>
+        <article class="card">
+          <h3>🔒 Enterprise Security</h3>
+          <p>Bank-grade encryption and compliance baked right in.</p>
+        </article>
+        <article class="card">
+          <h3>🌍 Global Scale</h3>
+          <p>Distributed infrastructure that grows with your audience.</p>
+        </article>
+      </div>
+    </section>
+  </main>
 
-        function clearDisplay() {
-            currentInput = '0';
-            shouldResetDisplay = false;
-            updateDisplay();
-        }
-
-        function appendToDisplay(value) {
-            if (shouldResetDisplay) {
-                currentInput = '0';
-                shouldResetDisplay = false;
-            }
-            
-            if (currentInput === '0' && value !== '.') {
-                currentInput = value;
-            } else {
-                // Prevent multiple operators in a row
-                const lastChar = currentInput[currentInput.length - 1];
-                if (['+', '-', '*', '/'].includes(lastChar) && ['+', '-', '*', '/'].includes(value)) {
-                    currentInput = currentInput.slice(0, -1) + value;
-                } else {
-                    currentInput += value;
-                }
-            }
-            
-            updateDisplay();
-        }
-
-        function deleteLast() {
-            if (currentInput.length > 1) {
-                currentInput = currentInput.slice(0, -1);
-            } else {
-                currentInput = '0';
-            }
-            updateDisplay();
-        }
-
-        function calculate() {
-            try {
-                // Basic validation
-                if (currentInput === '' || ['+', '-', '*', '/'].includes(currentInput[currentInput.length - 1])) {
-                    return;
-                }
-                
-                let result = eval(currentInput);
-                
-                // Handle division by zero
-                if (!isFinite(result)) {
-                    currentInput = 'Error';
-                } else {
-                    // Round to avoid floating point issues
-                    currentInput = Math.round(result * 100000000) / 100000000;
-                    currentInput = currentInput.toString();
-                }
-                
-                shouldResetDisplay = true;
-            } catch (error) {
-                currentInput = 'Error';
-                shouldResetDisplay = true;
-            }
-            updateDisplay();
-        }
-
-        // Keyboard support
-        document.addEventListener('keydown', (event) => {
-            if (event.key >= '0' && event.key <= '9') {
-                appendToDisplay(event.key);
-            } else if (event.key === '.') {
-                appendToDisplay('.');
-            } else if (event.key === '+' || event.key === '-' || event.key === '*' || event.key === '/') {
-                appendToDisplay(event.key);
-            } else if (event.key === 'Enter' || event.key === '=') {
-                calculate();
-            } else if (event.key === 'Escape' || event.key === 'c' || event.key === 'C') {
-                clearDisplay();
-            } else if (event.key === 'Backspace') {
-                deleteLast();
-            }
-        });
-    </script>
+  <footer>
+    © 2025 Brand Inc. All rights reserved.
+  </footer>
 </body>
 </html>
